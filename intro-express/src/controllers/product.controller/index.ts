@@ -65,9 +65,40 @@ export const updateProduct = (req: Request, res: Response) => {
         fs.writeFileSync('./db/db.json', JSON.stringify(products))
 
         res.status(201).json({
-            error: false, message: 'Update Product Success', data: {name, price}
+            error: false, 
+            message: 'Update Product Success', 
+            data: {name, price}
         })
     } catch (error) {
         
+    }
+}
+
+export const deleteProduct = (req: Request, res: Response) => {
+    try {
+        const {id} = req.params 
+
+        let products = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'))
+
+        for(let i=0; i<products.products.length; i++){
+            if(Number(id) === products.products[i].id){
+                products.products.splice(i, 1)
+                break;
+            }
+        }
+
+        fs.writeFileSync('./db/db.json', JSON.stringify(products))
+
+        res.status(200).json({
+            error: false, 
+            message: `Delete Product with Id=${id} Success`, 
+            data: {}
+        })
+    } catch (error: any) {
+        res.status(error.status || 500).json({
+            error: true, 
+            message: error.message, 
+            data: null
+        })
     }
 }

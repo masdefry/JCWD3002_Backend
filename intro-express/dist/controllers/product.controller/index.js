@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProduct = exports.createProduct = exports.findProducts = void 0;
+exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.findProducts = void 0;
 const fs_1 = __importDefault(require("fs"));
 const findProducts = (req, res) => {
     try {
@@ -60,10 +60,38 @@ const updateProduct = (req, res) => {
         });
         fs_1.default.writeFileSync('./db/db.json', JSON.stringify(products));
         res.status(201).json({
-            error: false, message: 'Update Product Success', data: { name, price }
+            error: false,
+            message: 'Update Product Success',
+            data: { name, price }
         });
     }
     catch (error) {
     }
 };
 exports.updateProduct = updateProduct;
+const deleteProduct = (req, res) => {
+    try {
+        const { id } = req.params;
+        let products = JSON.parse(fs_1.default.readFileSync('./db/db.json', 'utf-8'));
+        for (let i = 0; i < products.products.length; i++) {
+            if (Number(id) === products.products[i].id) {
+                products.products.splice(i, 1);
+                break;
+            }
+        }
+        fs_1.default.writeFileSync('./db/db.json', JSON.stringify(products));
+        res.status(200).json({
+            error: false,
+            message: `Delete Product with Id=${id} Success`,
+            data: {}
+        });
+    }
+    catch (error) {
+        res.status(error.status || 500).json({
+            error: true,
+            message: error.message,
+            data: null
+        });
+    }
+};
+exports.deleteProduct = deleteProduct;
