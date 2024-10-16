@@ -59,3 +59,33 @@ export const createTransaction = (req: Request, res: Response) => {
         })
     }
 }
+
+export const findMoviesByDateAndTime = (req: Request, res: Response) => {
+    try {
+        const {date, time} = req.query
+
+        const db = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'))
+
+        const findMoviesWithStatus = db.movies.map((movie: any) => {
+            let seat_available = movie.total_seat
+            
+            db.transactions.forEach((transaction: any) => {
+                if(transaction.date === date || transaction.time === time) seat_available -= transaction.total_seat
+            })
+
+            return {
+                ...movie, 
+                seat_available,
+                status: date! < movie.start_showing? 'UPCOMING' : date! >= movie.start_showing && date! <= movie.end_showing? 'ON_SHOWING' : 'ENDED'
+            }
+        })
+
+        res.status(200).json({
+            error: false, 
+            message: 'Find Movies by Query Success', 
+            data: findMoviesWithStatus
+        })
+    } catch (error) {
+        
+    }
+}

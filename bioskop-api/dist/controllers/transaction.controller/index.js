@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createTransaction = void 0;
+exports.findMoviesByDateAndTime = exports.createTransaction = void 0;
 const fs_1 = __importDefault(require("fs"));
 const createTransaction = (req, res) => {
     try {
@@ -58,3 +58,25 @@ const createTransaction = (req, res) => {
     }
 };
 exports.createTransaction = createTransaction;
+const findMoviesByDateAndTime = (req, res) => {
+    try {
+        const { date, time } = req.query;
+        const db = JSON.parse(fs_1.default.readFileSync('./db/db.json', 'utf-8'));
+        const findMoviesWithStatus = db.movies.map((movie) => {
+            let seat_available = movie.total_seat;
+            db.transactions.forEach((transaction) => {
+                if (transaction.date === date || transaction.time === time)
+                    seat_available -= transaction.total_seat;
+            });
+            return Object.assign(Object.assign({}, movie), { seat_available, status: date < movie.start_showing ? 'UPCOMING' : date >= movie.start_showing && date <= movie.end_showing ? 'ON_SHOWING' : 'ENDED' });
+        });
+        res.status(200).json({
+            error: false,
+            message: 'Find Movies by Query Success',
+            data: findMoviesWithStatus
+        });
+    }
+    catch (error) {
+    }
+};
+exports.findMoviesByDateAndTime = findMoviesByDateAndTime;
