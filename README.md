@@ -70,7 +70,7 @@ Welcome on Backend Development Module!
 
         2. Edit on `.env` Files
 
-                DATABASE_URL="mysql://USER:DBPASSWORD@localhost:3306 DBNAME"
+                DATABASE_URL="mysql://DBUSER:DBPASSWORD@localhost:3306 DBNAME"
 
         3. Create Model Inside `prisma > schema.prisma`:
    
