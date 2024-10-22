@@ -14,7 +14,7 @@ Welcome on Backend Development Module!
 
         3. Setup `tsconfig.json` & Uncomment this Code: 
                 "rootDir": "./src",    
-                "outDir": "./bundle",
+                "outDir": "./dist",
     
         4. Running TS:
   
