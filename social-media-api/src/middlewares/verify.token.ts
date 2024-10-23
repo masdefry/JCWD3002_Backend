@@ -8,9 +8,9 @@ export const verifyToken = async(req: Request, res: Response, next: NextFunction
 
         if(!authorization) throw {msg: 'Token Not Found', status: 400}
         
-        const decodedToken = await decodeToken(authorization!)
-        
-        req.body.decodedToken = decodedToken
+        const decodedToken: any = await decodeToken(authorization!)
+
+        req.body.usersId = decodedToken?.data?.id
 
         next()
     } catch (error) {

@@ -9,27 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPost = void 0;
-const posts_service_1 = require("../../services/posts.service");
-const createPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { caption, imageUrl, usersId } = req.body;
-        yield (0, posts_service_1.createPostService)({
+exports.createPostService = void 0;
+const connection_1 = require("../../connection");
+const createPostService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ caption, imageUrl, usersId }) {
+    yield connection_1.prisma.post.create({
+        data: {
             caption,
             imageUrl,
             usersId
-        });
-        res.status(201).json({
-            error: false,
-            message: 'Create Post Success',
-            data: {
-                caption,
-                imageUrl
-            }
-        });
-    }
-    catch (error) {
-        next(error);
-    }
+        }
+    });
 });
-exports.createPost = createPost;
+exports.createPostService = createPostService;

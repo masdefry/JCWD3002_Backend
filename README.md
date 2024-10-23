@@ -107,3 +107,9 @@ Welcome on Backend Development Module!
         4. Migration Models
 
                 npx prisma migrate dev --name init
+
+
+
++ Other Dependencies
+
+                npm i bcrypt jsonwebtoken @types/bcrypt @types/jsonwebtoken

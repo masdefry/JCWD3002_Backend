@@ -21,6 +21,7 @@ model User {
 
   comments Comment[]
   likes    Like[]
+  posts Post[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -33,6 +34,9 @@ model Post {
   id       Int    @id @default(autoincrement())
   imageUrl String
   caption  String
+  
+  usersId String 
+  users User @relation(fields: [usersId], references: [id])
 
   comments Comment[]
   likes    Like[]

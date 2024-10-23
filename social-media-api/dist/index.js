@@ -15,7 +15,7 @@ app.use('/api', routers_1.default);
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
         error: true,
-        message: err.msg || 'Something Went Wrong!',
+        message: err.msg || err.name === 'TokenExpiredError' ? err.message : 'Something Went Wrong!',
         data: {}
     });
 });
