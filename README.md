@@ -14,7 +14,7 @@ Welcome on Backend Development Module!
 
         3. Setup `tsconfig.json` & Uncomment this Code: 
                 "rootDir": "./src",    
-                "outDir": "./bundle",
+                "outDir": "./dist",
     
         4. Running TS:
   
@@ -70,7 +70,7 @@ Welcome on Backend Development Module!
 
         2. Edit on `.env` Files
 
-                DATABASE_URL="mysql://USER:DBPASSWORD@localhost:3306 DBNAME"
+                DATABASE_URL="mysql://DBUSER:DBPASSWORD@localhost:3306 DBNAME"
 
         3. Create Model Inside `prisma > schema.prisma`:
    
