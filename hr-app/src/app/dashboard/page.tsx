@@ -4,7 +4,12 @@ import { HiClipboardList } from "react-icons/hi";
 import { IoIosTime } from "react-icons/io";
 import Link from 'next/link';
 
+import authStore from './../../zustand/authStore';
+
 export default function DashboardPage(){
+
+    const auth = authStore((state) => state.firstName)
+    
     return(
         <main>
             <section className='py-5'>
@@ -12,7 +17,7 @@ export default function DashboardPage(){
                     Selamat Pagi 
                 </h1>
                 <h1 className='text-4xl'>
-                    Defryan 
+                    {auth}
                 </h1>
                 <h1 className='text-md font-thin py-5'>
                     Jangan lupa presensi hari ini.

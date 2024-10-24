@@ -1,8 +1,12 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
+import cors from 'cors';
 
 const app: Express = express();
 const port = 5000;
 app.use(express.json())
+app.use(cors({
+  origin: '*'
+}))
 
 app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Welcome to Express Typescript Server</h1>');
@@ -17,9 +21,10 @@ interface IError extends Error{
   msg: string
 }
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
+  console.log(err.msg)
   res.status(err.status || 500).json({
     error: true, 
-    message: err.msg || err.name === 'TokenExpiredError'? err.message : 'Something Went Wrong!',
+    message: err.msg? err.msg : err.name === 'TokenExpiredError'? err.message : 'Something Went Wrong!',
     data: {}
   })
 })

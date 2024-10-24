@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function BottomNavigation() {
     return (
-        <main className='p-3 grid grid-cols-5 fixed bottom-0 w-[640px] bg-gray-100 shadow-lg rounded-md'>
+        <main className='p-3 grid grid-cols-5 fixed bottom-0 w-[500px] bg-gray-100 shadow-lg rounded-md'>
             <Link href='/dashboard'>
                 <div className='flex flex-col items-center'>
                     <HiOutlineHome className='text-xl' />

@@ -1,7 +1,38 @@
 'use client';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {authSchema} from '@/features/auth/schemas/authSchema'
+import instance from '@/utils/axiosInstance';
+import {useMutation} from '@tanstack/react-query';
+import {toast} from 'react-toastify'
+
+import authStore from './../zustand/authStore';
+
+import {useRouter} from 'next/navigation';
 
 export default function HomePage() {
+  const router = useRouter()
+  const setAuth = authStore((state: any) =>  state.setAuth)
+
+  const {mutate: mutateAuthLogin} = useMutation({
+    mutationFn: async({email, password}: any) => {
+      console.log('>>>')
+      return await instance.post('/auth', {
+        email, 
+        password
+      })
+    }, 
+
+    onSuccess: (res) => {
+      setAuth({token: res.data.data.token, firstName: res.data.data.firstName})
+      toast.success('Auth Login Success!')
+      router.push('/dashboard')
+    },
+
+    onError: (err) => {
+      toast.error(err?.response?.data?.message)
+    }
+  })
+
   return (
     <main>
       <section className='p-10'>
@@ -9,21 +40,33 @@ export default function HomePage() {
           Selamat Datang
         </h1>
         <h1 className='text-md font-light'>
-          Masukan username dan password untuk masuk
+          Masukan email dan password untuk masuk
         </h1>
-        <Formik>
+        <Formik
+          initialValues={{
+            email: '', 
+            password: ''
+          }}
+          validationSchema={authSchema}
+          onSubmit={(values) => {
+            console.log('>>>')
+            mutateAuthLogin({email: values.email, password: values.password})
+          }}
+        >
           <Form className='w-full py-10 flex flex-col gap-5'>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text-alt'>Username or Email</span>
+                <span className='label-text-alt'>Email</span>
               </div>
-              <input type='text' className='input input-bordered w-full' />
+              <Field name='email' type='text' className='input input-bordered w-full' />
+              <ErrorMessage name='email' component={'div'} className='text-red-500 text-sm' />
             </label>
             <label className='form-control w-full'>
               <div className='label'>
                 <span className='label-text-alt'>Password</span>
               </div>
-              <input type='password' className='input input-bordered w-full' />
+              <Field name='password' type='password' className='input input-bordered w-full' />
+              <ErrorMessage name='password' component={'div'} className='text-red-500 text-sm' />
             </label>
             <button className='btn bg-red-500 text-white w-full'>
               Sign In

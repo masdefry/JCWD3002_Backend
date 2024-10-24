@@ -3,7 +3,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 import TanstackProvider from '@/providers/TanstackProvider';
 import ReduxProvider from '@/providers/ReduxProvider';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -32,7 +33,8 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <TanstackProvider>
-            <div className='hidden sm:block w-[640px] max-w-screen-md min-h-screen'>
+            <ToastContainer />
+            <div className='hidden sm:block w-[500px] max-w-screen-md min-h-screen'>
               {children}
             </div>
             <div className='p-10 block sm:hidden'>

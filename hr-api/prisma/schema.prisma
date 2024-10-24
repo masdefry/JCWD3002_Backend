@@ -12,3 +12,96 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User{
+  id  String @id @default(uuid())
+  firstName String
+  lastName String 
+  email String 
+  password String 
+  leaveBalance Int @default(12)
+  role Role
+  salary Int
+
+  shiftsId Int
+  shifts Shift @relation(fields: [shiftsId], references: [id])
+
+  attendances Attendance[]
+  usersRequestId Leave[] @relation("usersRequestId")
+  usersApprovalId  Leave[] @relation("usersApprovalId")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("users")
+}
+
+enum Role{
+  HR 
+  MANAGER 
+  STAFF
+}
+
+model Shift{
+  id Int @id @default(autoincrement())
+  startTime DateTime @db.Time()
+  endTime DateTime @db.Time()
+
+  users User[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("shifts")
+}
+
+model Attendance{
+  id Int @id @default(autoincrement())
+  clockIn DateTime
+  clockOut DateTime?
+  deduction Int?
+
+  usersId String 
+  users User @relation(fields: [usersId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("attendances")
+}
+
+model Leave{
+  id Int @id @default(autoincrement())
+  startDate DateTime
+  endDate DateTime
+  reason String
+  leaveStatus LeaveStatus @default(PENDING)
+  typeLeave LeaveType
+
+  usersRequestId String 
+  usersRequest User @relation("usersRequestId", fields: [usersRequestId], references: [id])
+  usersApprovalId String? 
+  usersApproval User? @relation("usersApprovalId", fields: [usersApprovalId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("leaves")
+}
+
+enum LeaveStatus{
+  PENDING 
+  APPROVED 
+  REJECTED
+}
+
+enum LeaveType{
+  SAKIT
+  MELAHIRKAN
+  MENIKAH
+  KELUARGA_MENINGGAL 
+}
