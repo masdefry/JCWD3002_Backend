@@ -1,15 +1,16 @@
 export interface IAuth{
-    id: string, 
+    id?: string, 
     firstName: string,
     lastName: string, 
     email: string, 
     password: string, 
-    leaveBalance: number, 
+    leaveBalance?: number, 
     role: Role | string,  
     salary: number, 
-    createdAt: Date, 
-    updatedAt: Date, 
-    deletedAt: Date | null
+    shiftsId: number, 
+    createdAt?: Date, 
+    updatedAt?: Date, 
+    deletedAt?: Date | null
 }
 
 enum Role{

@@ -9,18 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyToken = void 0;
-const jwt_1 = require("../utils/jwt");
-const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+exports.verifyRole = void 0;
+const verifyRole = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let { authorization } = req.headers;
-        authorization = authorization === null || authorization === void 0 ? void 0 : authorization.split(' ')[1];
-        if (!authorization)
-            throw { msg: 'Token Not Found', status: 400 };
-        const decodedToken = yield (0, jwt_1.decodeToken)(authorization);
-        req.body.usersId = (_a = decodedToken === null || decodedToken === void 0 ? void 0 : decodedToken.data) === null || _a === void 0 ? void 0 : _a.id;
-        req.body.authorizationRole = (_b = decodedToken === null || decodedToken === void 0 ? void 0 : decodedToken.data) === null || _b === void 0 ? void 0 : _b.role;
+        const { authorizationRole } = req.body;
+        if (authorizationRole !== 'HR')
+            throw { msg: 'User Unauthorized', status: 401 };
         next();
     }
     catch (error) {
@@ -28,4 +22,4 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         next(error);
     }
 });
-exports.verifyToken = verifyToken;
+exports.verifyRole = verifyRole;
