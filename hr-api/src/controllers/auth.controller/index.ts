@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { authLoginService } from '../../services/auth.service';
+import { authLoginService, keepAuthService } from '../../services/auth.service';
 import { createToken } from '../../utils/jwt';
+import { IAuth } from '../../services/auth.service/types';
 
 export const authLogin = async(req: Request, res: Response, next: NextFunction) => {
     try {
@@ -14,12 +15,31 @@ export const authLogin = async(req: Request, res: Response, next: NextFunction) 
             error: false, 
             message: 'Login Success',
             data: {
-                token, 
-                email: user[0].email, 
-                firstName: user[0].firstName
+                token,
+                firstName: user[0].firstName, 
+                role: user[0].role
             }
         })
     } catch (error) {
         next(error)
+    }
+}
+
+export const keepAuth = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {usersId} = req.body 
+        
+        const user: IAuth = await keepAuthService({id: usersId})
+        
+        res.status(200).json({
+            error: false, 
+            message: 'Keep Auth Success', 
+            data: {
+                firstName: user.firstName,
+                role: user.role, 
+            }
+        })
+    } catch (error) {
+        console.log(error)
     }
 }

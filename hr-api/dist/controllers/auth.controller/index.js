@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authLogin = void 0;
+exports.keepAuth = exports.authLogin = void 0;
 const auth_service_1 = require("../../services/auth.service");
 const jwt_1 = require("../../utils/jwt");
 const authLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -22,8 +22,8 @@ const authLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             message: 'Login Success',
             data: {
                 token,
-                email: user[0].email,
-                firstName: user[0].firstName
+                firstName: user[0].firstName,
+                role: user[0].role
             }
         });
     }
@@ -32,3 +32,21 @@ const authLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.authLogin = authLogin;
+const keepAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { usersId } = req.body;
+        const user = yield (0, auth_service_1.keepAuthService)({ id: usersId });
+        res.status(200).json({
+            error: false,
+            message: 'Keep Auth Success',
+            data: {
+                firstName: user.firstName,
+                role: user.role,
+            }
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.keepAuth = keepAuth;

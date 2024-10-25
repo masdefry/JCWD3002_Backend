@@ -15,3 +15,13 @@ export const authLoginService = async({email, password}: Pick<IAuth, 'email' | '
 
     return findUsers
 }
+
+export const keepAuthService = async({id}: Pick<IAuth, 'id'>) => {
+    const findUser = await prisma.user.findUnique({
+        where: { id }
+    })
+    
+    if(!findUser?.id) throw {msg: 'User Tidak Ditemukan', status: 400}
+
+    return findUser
+}

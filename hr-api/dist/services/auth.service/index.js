@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authLoginService = void 0;
+exports.keepAuthService = exports.authLoginService = void 0;
 const connection_1 = require("../../connection");
 const hash_password_1 = require("../../utils/hash.password");
 const authLoginService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ email, password }) {
@@ -24,3 +24,12 @@ const authLoginService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ em
     return findUsers;
 });
 exports.authLoginService = authLoginService;
+const keepAuthService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ id }) {
+    const findUser = yield connection_1.prisma.user.findUnique({
+        where: { id }
+    });
+    if (!(findUser === null || findUser === void 0 ? void 0 : findUser.id))
+        throw { msg: 'User Tidak Ditemukan', status: 400 };
+    return findUser;
+});
+exports.keepAuthService = keepAuthService;

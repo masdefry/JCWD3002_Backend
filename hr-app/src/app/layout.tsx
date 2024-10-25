@@ -5,6 +5,8 @@ import TanstackProvider from '@/providers/TanstackProvider';
 import ReduxProvider from '@/providers/ReduxProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AuthProvider from '@/providers/AuthProvider';
+
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -33,18 +35,20 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <TanstackProvider>
-            <ToastContainer />
-            <div className='hidden sm:block w-[500px] max-w-screen-md min-h-screen'>
-              {children}
-            </div>
-            <div className='p-10 block sm:hidden'>
-              <h1 className='font-bold text-4xl'>
-                Opsie! 
-              </h1>
-              <span className='font-light text-md'>
-                This App Not Support on Your Device Screen
-              </span>
-            </div>
+            <AuthProvider>
+              <ToastContainer />
+              <div className='hidden sm:block w-[500px] max-w-screen-md min-h-screen'>
+                {children}
+              </div>
+              <div className='p-10 block sm:hidden'>
+                <h1 className='font-bold text-4xl'>
+                  Opsie! 
+                </h1>
+                <span className='font-light text-md'>
+                  This App Not Support on Your Device Screen
+                </span>
+              </div>
+            </AuthProvider>
           </TanstackProvider>
         </ReduxProvider>
       </body>

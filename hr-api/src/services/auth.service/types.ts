@@ -5,8 +5,11 @@ export interface IAuth{
     email: string, 
     password: string, 
     leaveBalance: number, 
-    role: Role,  
-    salary: number
+    role: Role | string,  
+    salary: number, 
+    createdAt: Date, 
+    updatedAt: Date, 
+    deletedAt: Date | null
 }
 
 enum Role{

@@ -15,7 +15,6 @@ export default function HomePage() {
 
   const {mutate: mutateAuthLogin} = useMutation({
     mutationFn: async({email, password}: any) => {
-      console.log('>>>')
       return await instance.post('/auth', {
         email, 
         password
@@ -23,7 +22,13 @@ export default function HomePage() {
     }, 
 
     onSuccess: (res) => {
-      setAuth({token: res.data.data.token, firstName: res.data.data.firstName})
+      setAuth(
+        {
+          token: res?.data?.data?.token, 
+          firstName: res?.data?.data?.firstName, 
+          role: res?.data?.data?.role
+        }
+      )
       toast.success('Auth Login Success!')
       router.push('/dashboard')
     },
