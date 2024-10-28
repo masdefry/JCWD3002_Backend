@@ -13,7 +13,7 @@ export interface IAuth{
     deletedAt?: Date | null
 }
 
-enum Role{
+export enum Role{
     HR, 
     MANAGER, 
     STAFF

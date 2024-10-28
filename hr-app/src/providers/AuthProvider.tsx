@@ -32,7 +32,6 @@ export default function AuthProvider({children}: IAuthProviderProps){
     }, [auth])
 
     useEffect(() => {
-        console.log(token)
         if(pathname === '/' && token) router.push('/dashboard')
     }, [])
 
