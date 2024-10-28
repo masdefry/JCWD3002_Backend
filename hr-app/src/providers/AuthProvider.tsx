@@ -14,16 +14,13 @@ export default function AuthProvider({children}: IAuthProviderProps){
     const pathname = usePathname()
 
     const token = authStore((state) => state.token)
+    
     const setKeepAuth = authStore((state) =>  state.setKeepAuth)
 
     const {data: auth} = useQuery({
         queryKey: ['keepAuth'],
         queryFn: async() => {
-            return instance.get('/auth', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            return instance.get('/auth')
         }
     })
     
@@ -37,6 +34,7 @@ export default function AuthProvider({children}: IAuthProviderProps){
 
     return(
         <>
+            {console.log('Render')}
             {children}
         </>
     )

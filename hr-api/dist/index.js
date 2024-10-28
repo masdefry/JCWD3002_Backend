@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 const routers_1 = __importDefault(require("./routers"));
 app.use('/api', routers_1.default);
 app.use((err, req, res, next) => {
-    console.log(err.msg);
+    console.log(err);
     res.status(err.status || 500).json({
         error: true,
         message: err.msg ? err.msg : err.name === 'TokenExpiredError' ? err.message : 'Something Went Wrong!',

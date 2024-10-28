@@ -3,27 +3,29 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import HeaderTitle from '@/components/HeaderTitle'
 import {registerEmployeeSchema} from '@/features/hr/register-employee/schemas/registerEmployeeSchema'
 import instance from '@/utils/axiosInstance'
-import authStore from '@/zustand/authStore'
 import {useMutation} from '@tanstack/react-query'
+import {toast} from 'react-toastify';
 
 export default function RegisterEmployee(){
-    const token = authStore((state) => state.token)
-
-    useMutation({
+    const {mutate: mutateCreateEmployee} = useMutation({
         mutationFn: async({firstName, lastName, email, salary, role, shiftsId}: any) => {
             return await instance.post('/hr/create-user', {
                 firstName, 
                 lastName, 
                 email, 
-                salary, 
+                salary: Number(salary), 
                 role, 
-                shiftsId
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                shiftsId: Number(shiftsId)
             })
+        },
+
+        onSuccess: (res) => {
+            toast.success('Register Employee Success')
+        },
+
+        onError: (err) => {
+            console.log('onError')
+            console.log(err)
         }
     })
 
@@ -36,13 +38,20 @@ export default function RegisterEmployee(){
                         firstName: '',
                         lastName: '',
                         email: '', 
-                        salary: null,
-                        role: null, 
-                        shiftsId: null
+                        salary: '',
+                        role: '', 
+                        shiftsId: ''
                     }}
                     validationSchema={registerEmployeeSchema}
-                    onSubmit={(values) => {
-                        console.log(values)
+                    onSubmit={(values, {resetForm}) => {
+                        mutateCreateEmployee({
+                            firstName: values.firstName, 
+                            lastName: values.lastName, 
+                            email: values.email, 
+                            salary: values.salary, 
+                            role: values.role, 
+                            shiftsId: values.shiftsId
+                        })
                     }}
                 >
                     <Form className='w-full flex flex-col gap-5 overflow-y-auto h-screen'>

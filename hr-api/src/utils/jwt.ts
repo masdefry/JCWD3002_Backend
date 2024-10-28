@@ -6,7 +6,7 @@ interface ICreateTokenParams{
 }
 
 export const createToken = ({id, role}: ICreateTokenParams) => {
-    return jwt.sign({ data: {id, role} }, 'jcwd3002', { expiresIn: '1h' })
+    return jwt.sign({ data: {id, role} }, 'jcwd3002', { expiresIn: '10s' })
 }
 
 export const decodeToken = (token: string) => {

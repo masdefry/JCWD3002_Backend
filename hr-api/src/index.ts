@@ -21,7 +21,7 @@ interface IError extends Error{
   msg: string
 }
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
-  console.log(err.msg)
+  console.log(err)
   res.status(err.status || 500).json({
     error: true, 
     message: err.msg? err.msg : err.name === 'TokenExpiredError'? err.message : 'Something Went Wrong!',
