@@ -40,15 +40,16 @@ export default function AuthProvider({children}: IAuthProviderProps){
         // Proteksi Apabila Sudah Login, Maka Tidak Boleh Mengakses Halaman Login nya
         if(pathname === '/' && token){
             router.push('/dashboard')
-        }
+        }   
+        console.log(isKeepAuth)
 
         if(isKeepAuth === true){
             // Proteksi Apabila Tidak Punya Token, Maka Tidak Bisa Mengakses Halaman Dashboard nya
-            setTimeout(() => {
-                if(!token) router.push('/')
-            }, 3000)
+            if(!token && pathname.split('/')[1] !== 'reset-password'){
+                router.push('/')
+            } 
         }
-    }, [isKeepAuth])
+    }, [isKeepAuth, pathname])
 
     if(isKeepAuth === false) return(
         <main className='flex justify-center'>

@@ -10,10 +10,11 @@ export default function Free({children}){
     const role = authStore((state) => state.role)
 
     useEffect(() => {
+        console.log(role)
         setTimeout(() => {
             setIsLoading(false)
         }, 2000)
-        if(role && role !== 'HR') router.push('/not-found')
+        if(role && role !== 'HR') router.push('/')
     }, [role])
 
     if(isLoading === true){

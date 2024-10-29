@@ -16,15 +16,20 @@ exports.createUser = void 0;
 const hr_service_1 = require("../../services/hr.service");
 const transporter_1 = require("../../utils/transporter");
 const fs_1 = __importDefault(require("fs"));
+const handlebars_1 = require("handlebars");
+const jwt_1 = require("./../../utils/jwt");
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { firstName, lastName, email, role, salary, shiftsId } = req.body;
-        yield (0, hr_service_1.createUserService)({ firstName, lastName, email, role, salary, shiftsId });
+        const createdUser = yield (0, hr_service_1.createUserService)({ firstName, lastName, email, role, salary, shiftsId });
+        const token = yield (0, jwt_1.createToken)({ id: createdUser === null || createdUser === void 0 ? void 0 : createdUser.id, role: role });
         const emailBody = fs_1.default.readFileSync('./src/public/email.reset.password.html', 'utf-8');
+        let compiledEmailBody = yield (0, handlebars_1.compile)(emailBody);
+        compiledEmailBody = compiledEmailBody({ email, url: `http://localhost:3000/reset-password/${token}` });
         yield transporter_1.transporter.sendMail({
             to: email,
             subject: 'Reset Password Account',
-            html: emailBody
+            html: compiledEmailBody
         });
         res.status(201).json({
             error: false,

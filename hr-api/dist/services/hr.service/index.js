@@ -14,7 +14,7 @@ const connection_1 = require("../../connection");
 const hash_password_1 = require("../../utils/hash.password");
 const createUserService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ firstName, lastName, email, role, salary, shiftsId }) {
     const prismaRole = role;
-    yield connection_1.prisma.user.create({
+    return yield connection_1.prisma.user.create({
         data: { firstName, lastName, email, password: yield (0, hash_password_1.hashPassword)('abc123'), role: prismaRole, salary, shiftsId }
     });
 });
