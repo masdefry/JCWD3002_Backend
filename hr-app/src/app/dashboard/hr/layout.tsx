@@ -3,7 +3,7 @@ import authStore from '@/zustand/authStore';
 import {useRouter} from 'next/navigation';
 import {useState, useEffect} from 'react';
 
-export default function HRLayout({children}){
+export default function Free({children}){
     const [isLoading, setIsLoading] = useState(true)
 
     const router = useRouter()
@@ -13,7 +13,7 @@ export default function HRLayout({children}){
         setTimeout(() => {
             setIsLoading(false)
         }, 2000)
-        if(role !== 'HR') router.push('/not-found')
+        if(role && role !== 'HR') router.push('/not-found')
     }, [])
 
     if(isLoading === true){

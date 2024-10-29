@@ -8,13 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createUser = void 0;
 const hr_service_1 = require("../../services/hr.service");
+const transporter_1 = require("../../utils/transporter");
+const fs_1 = __importDefault(require("fs"));
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { firstName, lastName, email, role, salary, shiftsId } = req.body;
         yield (0, hr_service_1.createUserService)({ firstName, lastName, email, role, salary, shiftsId });
+        const emailBody = fs_1.default.readFileSync('./src/public/email.reset.password.html', 'utf-8');
+        yield transporter_1.transporter.sendMail({
+            to: email,
+            subject: 'Reset Password Account',
+            html: emailBody
+        });
         res.status(201).json({
             error: false,
             message: 'Create New User Success',
