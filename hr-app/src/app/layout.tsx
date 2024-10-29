@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import TanstackProvider from '@/providers/TanstackProvider';
-import ReduxProvider from '@/providers/ReduxProvider';
+// import ReduxProvider from '@/providers/ReduxProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthProvider from '@/providers/AuthProvider';
@@ -33,7 +33,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex justify-center`}
       >
-        <ReduxProvider>
+        {/* <ReduxProvider> */}
           <TanstackProvider>
             <AuthProvider>
               <ToastContainer />
@@ -50,7 +50,7 @@ export default function RootLayout({
               </div>
             </AuthProvider>
           </TanstackProvider>
-        </ReduxProvider>
+        {/* </ReduxProvider> */}
       </body>
     </html>
   );

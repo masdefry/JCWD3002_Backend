@@ -14,7 +14,7 @@ export default function Free({children}){
             setIsLoading(false)
         }, 2000)
         if(role && role !== 'HR') router.push('/not-found')
-    }, [])
+    }, [role])
 
     if(isLoading === true){
         return(
