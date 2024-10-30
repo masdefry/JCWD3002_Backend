@@ -28,10 +28,12 @@ export default function BottomNavigation() {
                 <HiOutlineInboxArrowDown className='text-xl' />
                 Inbox
             </div>
-            <div className='flex flex-col items-center'>
-                <MdOutlineAccountCircle className='text-xl' />
-                Account
-            </div>
+            <Link href='/dashboard/profile'>
+                <div className='flex flex-col items-center'>
+                    <MdOutlineAccountCircle className='text-xl' />
+                    Account
+                </div>
+            </Link>
         </main>
     );
 }

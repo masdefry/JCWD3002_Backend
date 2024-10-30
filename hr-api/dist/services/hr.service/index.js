@@ -12,10 +12,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createUserService = void 0;
 const connection_1 = require("../../connection");
 const hash_password_1 = require("../../utils/hash.password");
+const jwt_1 = require("./../../utils/jwt");
 const createUserService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ firstName, lastName, email, role, salary, shiftsId }) {
-    const prismaRole = role;
-    return yield connection_1.prisma.user.create({
-        data: { firstName, lastName, email, password: yield (0, hash_password_1.hashPassword)('abc123'), role: prismaRole, salary, shiftsId }
-    });
+    return connection_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+        const prismaRole = role;
+        const createdUser = yield tx.user.create({
+            data: { firstName, lastName, email, password: yield (0, hash_password_1.hashPassword)('abc123'), role: prismaRole, salary, shiftsId }
+        });
+        const token = yield (0, jwt_1.createToken)({
+            id: createdUser === null || createdUser === void 0 ? void 0 : createdUser.id,
+            role: role
+        });
+        yield tx.user.update({
+            data: {
+                tokenResetPassword: token
+            },
+            where: {
+                id: createdUser.id
+            }
+        });
+        return token;
+    }));
 });
 exports.createUserService = createUserService;

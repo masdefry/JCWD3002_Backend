@@ -19,6 +19,8 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if (!authorization)
             throw { msg: 'Token Not Found', status: 400 };
         const decodedToken = yield (0, jwt_1.decodeToken)(authorization);
+        console.log('decodedToken');
+        console.log(decodedToken);
         req.body.usersId = (_a = decodedToken === null || decodedToken === void 0 ? void 0 : decodedToken.data) === null || _a === void 0 ? void 0 : _a.id;
         req.body.authorizationRole = (_b = decodedToken === null || decodedToken === void 0 ? void 0 : decodedToken.data) === null || _b === void 0 ? void 0 : _b.role;
         next();

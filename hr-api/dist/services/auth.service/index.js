@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.keepAuthService = exports.authLoginService = void 0;
+exports.resetPasswordService = exports.keepAuthService = exports.authLoginService = void 0;
 const connection_1 = require("../../connection");
 const hash_password_1 = require("../../utils/hash.password");
 const authLoginService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ email, password }) {
@@ -33,3 +33,23 @@ const keepAuthService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ id 
     return findUser;
 });
 exports.keepAuthService = keepAuthService;
+const resetPasswordService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ id, password, token }) {
+    const findUser = yield connection_1.prisma.user.findUnique({
+        where: {
+            id,
+            tokenResetPassword: token
+        }
+    });
+    if (!(findUser === null || findUser === void 0 ? void 0 : findUser.id))
+        throw { msg: 'Link Sudah Tidak Berlaku', status: 406 };
+    yield connection_1.prisma.user.update({
+        data: {
+            password: yield (0, hash_password_1.hashPassword)(password),
+            tokenResetPassword: ''
+        },
+        where: {
+            id
+        }
+    });
+});
+exports.resetPasswordService = resetPasswordService;

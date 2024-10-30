@@ -22,6 +22,7 @@ model User{
   leaveBalance Int @default(12)
   role Role
   salary Int
+  tokenResetPassword String? @db.LongText
 
   shiftsId Int
   shifts Shift @relation(fields: [shiftsId], references: [id])

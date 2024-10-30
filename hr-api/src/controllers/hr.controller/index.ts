@@ -3,20 +3,22 @@ import { createUserService } from '../../services/hr.service';
 import { transporter } from '../../utils/transporter';
 import fs from 'fs';
 import {compile} from 'handlebars';
-import { createToken } from './../../utils/jwt';
 
 export const createUser = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const { firstName, lastName, email, role, salary, shiftsId } = req.body
 
-        const createdUser = await createUserService({ firstName, lastName, email, role, salary, shiftsId })
+        const token = await createUserService({ firstName, lastName, email, role, salary, shiftsId })
         
-        const token = await createToken({id: createdUser?.id, role: role})
-
         const emailBody = fs.readFileSync('./src/public/email.reset.password.html', 'utf-8')
 
         let compiledEmailBody:any = await compile(emailBody)
-        compiledEmailBody = compiledEmailBody({email, url: `http://localhost:3000/reset-password/${token}`})
+        compiledEmailBody = compiledEmailBody(
+            {
+                email, 
+                url: `http://localhost:3000/reset-password/${token}`
+            }
+        )
 
         await transporter.sendMail({
             to: email,

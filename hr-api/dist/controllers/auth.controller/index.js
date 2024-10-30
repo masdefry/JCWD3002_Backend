@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.keepAuth = exports.authLogin = void 0;
+exports.resetPassword = exports.keepAuth = exports.authLogin = void 0;
 const auth_service_1 = require("../../services/auth.service");
 const jwt_1 = require("../../utils/jwt");
 const authLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,3 +50,19 @@ const keepAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.keepAuth = keepAuth;
+const resetPassword = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { usersId, password } = req.body;
+        const { authorization } = req.headers;
+        yield (0, auth_service_1.resetPasswordService)({ id: usersId, password, token: authorization === null || authorization === void 0 ? void 0 : authorization.split(' ')[1] });
+        res.status(200).json({
+            error: false,
+            message: 'Reset Password Success',
+            data: {}
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.resetPassword = resetPassword;
