@@ -7,10 +7,20 @@ exports.uploadMulter = void 0;
 const multer_1 = __importDefault(require("multer"));
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        console.log(file);
+        cb(null, 'src/public/images');
     },
     filename: function (req, file, cb) {
-        console.log(file);
+        const splitOriginalName = file.originalname.split('.');
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.' + splitOriginalName[splitOriginalName.length - 1]); // images-Date.now-Math.round()
     }
 });
-exports.uploadMulter = (0, multer_1.default)({ storage: storage });
+const fileFilter = (req, file, cb) => {
+    const extensionAccepted = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    const splitOriginalName = file.originalname.split('.');
+    if (!extensionAccepted.includes(splitOriginalName[splitOriginalName.length - 1])) {
+        return cb(new Error('Format File Tidak Diizinkan'));
+    }
+    return cb(null, true);
+};
+exports.uploadMulter = (0, multer_1.default)({ storage: storage, fileFilter: fileFilter, limits: { fileSize: 2000000 } });

@@ -30,12 +30,45 @@ model User{
   attendances Attendance[]
   usersRequestId Leave[] @relation("usersRequestId")
   usersApprovalId  Leave[] @relation("usersApprovalId")
+  userProfile UserProfile? 
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   @@map("users")
+}
+
+model UserProfile{
+  id Int @id @default(autoincrement())
+  birthDate DateTime @db.Date()
+  phoneNumber String @db.Char(15)
+  address String @db.Char(255)
+
+  usersId String @unique
+  users User @relation(fields: [usersId], references: [id])
+
+  userProfileImage UserProfileImage[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("user_profiles")
+}
+
+model UserProfileImage{
+  id Int @id @default(autoincrement())
+  imageUrl String @db.LongText
+
+  userProfilesId Int 
+  userProfile UserProfile @relation(fields: [userProfilesId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("user_profile_images")
 }
 
 enum Role{
