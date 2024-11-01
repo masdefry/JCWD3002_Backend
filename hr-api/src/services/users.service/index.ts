@@ -12,11 +12,25 @@ export const createProfileService = async({imagesUploaded, birthDate, phoneNumbe
         })
     
         const imagesToCreate = imagesUploaded.images.map((image: File) => {
-            return { imageUrl: image.filename, userProfilesId: createdUserProfile.id }
+            return { imageUrl: image.filename, directory: image.destination, userProfilesId: createdUserProfile.id }
         })
     
         await tx.userProfileImage.createMany({
             data: imagesToCreate
         })
+    })
+}
+
+export const findProfileService = async({usersId}) => {
+    return await prisma.userProfile.findFirst({
+        where: {usersId},
+        include: {
+            userProfileImage: {
+                select: {
+                    imageUrl: true,
+                    directory: true
+                }
+            }
+        },
     })
 }

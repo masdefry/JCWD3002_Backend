@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProfileService = void 0;
+exports.findProfileService = exports.createProfileService = void 0;
 const connection_1 = require("../../connection");
 const createProfileService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ imagesUploaded, birthDate, phoneNumber, address, usersId }) {
     yield connection_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
@@ -22,7 +22,7 @@ const createProfileService = (_a) => __awaiter(void 0, [_a], void 0, function* (
             }
         });
         const imagesToCreate = imagesUploaded.images.map((image) => {
-            return { imageUrl: image.filename, userProfilesId: createdUserProfile.id };
+            return { imageUrl: image.filename, directory: image.destination, userProfilesId: createdUserProfile.id };
         });
         yield tx.userProfileImage.createMany({
             data: imagesToCreate
@@ -30,3 +30,17 @@ const createProfileService = (_a) => __awaiter(void 0, [_a], void 0, function* (
     }));
 });
 exports.createProfileService = createProfileService;
+const findProfileService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ usersId }) {
+    return yield connection_1.prisma.userProfile.findFirst({
+        where: { usersId },
+        include: {
+            userProfileImage: {
+                select: {
+                    imageUrl: true,
+                    directory: true
+                }
+            }
+        },
+    });
+});
+exports.findProfileService = findProfileService;
