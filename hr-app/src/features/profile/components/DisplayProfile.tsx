@@ -1,16 +1,23 @@
 import {IDisplayProfileProps} from './types'
+import Image from 'next/image';
 
 export default function DisplayProfile({
     birthDate,
     phoneNumber, 
-    address
+    address,
+    imagesProfile
 }: IDisplayProfileProps){
     return(
         <section className='p-10'>
             <section className='flex flex-col gap-3'>
                 <div className='bg-gray-100 rounded-md p-3 flex items-center justify-between'>
                     <div className='bg-gray-300 w-[100px] h-[100px] rounded-full'>
-
+                        <Image 
+                            src={`http://localhost:5000/api/${imagesProfile[0]?.directory}/${imagesProfile[0]?.imageUrl}`}
+                            width={100}
+                            height={100}
+                            alt='Image Profile'
+                        />
                     </div>
                     <h1 className='text-xl font-bold'>
                         Muhammad Defryan
@@ -21,7 +28,7 @@ export default function DisplayProfile({
                         <span className='label-text-alt text-md'>Birthdate</span>
                     </div>
                     <h1 className='text-xl font-bold'>
-                        {birthDate.split('T')[0]}
+                        {birthDate?.split('T')[0]}
                     </h1>
                 </label>
                 <label className='form-control w-full'>

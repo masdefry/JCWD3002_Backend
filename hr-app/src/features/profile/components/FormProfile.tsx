@@ -1,8 +1,8 @@
-
 import {Formik, Form, Field, ErrorMessage} from 'formik'; 
-import { createProfileValiditionSchema } from '@/features/profile/schemas/createProfileValidationSchema
+import { createProfileValiditionSchema } from '@/features/profile/schemas/createProfileValidationSchema';
+import {IFormProfile} from './types';
 
-export default function FormProfile(){
+export default function FormProfile({mutateCreateProfile}: IFormProfile){
     return(
         <Formik
             initialValues={{
