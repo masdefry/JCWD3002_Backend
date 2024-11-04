@@ -5,6 +5,8 @@ export interface IDisplayProfileProps{
     imagesProfile: any[]
 }
 
-export interface IFormProfile{
-    mutateCreateProfile: (fd: FormData) => void;
+export interface IFormProfile extends Partial<Pick<IDisplayProfileProps, 'birthDate' | 'phoneNumber' | 'address'>>{
+    mutateCreateProfile?: (fd: FormData) => void;
+    mutateUpdateProfile?: (fd: FormData) => void;
+    isEdit?: boolean
 }

@@ -2,15 +2,20 @@ import {Formik, Form, Field, ErrorMessage} from 'formik';
 import { createProfileValiditionSchema } from '@/features/profile/schemas/createProfileValidationSchema';
 import {IFormProfile} from './types';
 
-export default function FormProfile({mutateCreateProfile, birthDate, address, phoneNumber}: IFormProfile){
-    console.log(birthDate)
-    console.log(address)
-    console.log(phoneNumber)
+export default function FormProfile(
+    {
+        mutateCreateProfile = () => {}, 
+        mutateUpdateProfile = () => {}, 
+        birthDate, 
+        address, 
+        phoneNumber, 
+        isEdit = false
+    }: IFormProfile){
     return(
         <Formik
             initialValues={{
                 file: [] as File[], 
-                birthDate: birthDate || '',
+                birthDate: birthDate?.split('T')[0] || '',
                 phoneNumber: phoneNumber || '',
                 address: address || ''
             }}
@@ -21,7 +26,12 @@ export default function FormProfile({mutateCreateProfile, birthDate, address, ph
                 fd.append('phoneNumber', values.phoneNumber)
                 fd.append('address', values.address)
                 values?.file!.forEach((value: File) => fd.append('images', value))
-                mutateCreateProfile(fd)
+
+                if(isEdit){
+                    mutateUpdateProfile(fd)
+                }else{
+                    mutateCreateProfile(fd)
+                }
             }}
         >
             {

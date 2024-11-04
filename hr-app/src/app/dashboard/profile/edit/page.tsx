@@ -16,6 +16,7 @@ export default function EditProfilePage(){
                 birthDate={dataUserProfile?.birthDate}
                 address={dataUserProfile?.address}
                 phoneNumber={dataUserProfile?.phoneNumber}
+                isEdit={true}
             />
         </main>
     )
