@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findProfile = exports.createProfile = void 0;
+exports.updateProfile = exports.findProfile = exports.createProfile = void 0;
 const users_service_1 = require("../../services/users.service");
 const delete_files_1 = require("../../utils/delete.files");
 const createProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -48,3 +48,14 @@ const findProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.findProfile = findProfile;
+const updateProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { usersId, birthDate, address, phoneNumber } = req.body;
+        const imagesUploaded = req.files;
+        yield (0, users_service_1.updateProfileService)({ usersId, birthDate, address, phoneNumber, imagesUploaded });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.updateProfile = updateProfile;

@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findProfileService = exports.createProfileService = void 0;
+exports.updateProfileService = exports.findProfileService = exports.createProfileService = void 0;
 const connection_1 = require("../../connection");
+const delete_files_1 = require("../../utils/delete.files");
 const createProfileService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ imagesUploaded, birthDate, phoneNumber, address, usersId }) {
     yield connection_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
         const createdUserProfile = yield tx.userProfile.create({
@@ -44,3 +45,42 @@ const findProfileService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ 
     });
 });
 exports.findProfileService = findProfileService;
+const updateProfileService = (_a) => __awaiter(void 0, [_a], void 0, function* ({ birthDate, address, phoneNumber, usersId, imagesUploaded }) {
+    yield connection_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+        // Step-01 Update Profile to Update by usersId
+        const updateProfile = yield tx.userProfile.update({
+            data: {
+                birthDate: new Date(birthDate),
+                address,
+                phoneNumber
+            },
+            where: {
+                usersId
+            }
+        });
+        // Step-02 Find Image User from UserImageProfile by userProfileId
+        const findProfileImages = yield tx.userProfileImage.findMany({
+            where: {
+                userProfilesId: updateProfile.id
+            }
+        });
+        // Step-04 Delete Current Data Image on UserImageProfile > Create New Data Image on UserImageProfile v
+        yield tx.userProfileImage.deleteMany({
+            where: {
+                userProfilesId: updateProfile.id
+            }
+        });
+        const imagesToCreate = imagesUploaded.images.map((image) => {
+            return { imageUrl: image.filename, directory: image.destination, userProfilesId: updateProfile.id };
+        });
+        yield tx.userProfileImage.createMany({
+            data: imagesToCreate
+        });
+    }));
+    // Step-03 Delete Image User File Based on Step-02
+    const imagesToDelete = findProfileImages.map((image) => {
+        return { path: `${image.directory}/${image.imageUrl}` };
+    });
+    (0, delete_files_1.deleteFiles)({ imagesUploaded: { images: imagesToDelete } });
+});
+exports.updateProfileService = updateProfileService;

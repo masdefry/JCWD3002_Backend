@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { createProfileService, findProfileService } from '../../services/users.service';
+import { createProfileService, findProfileService, updateProfileService } from '../../services/users.service';
 import { deleteFiles } from '../../utils/delete.files';
 
 export const createProfile = async(req: Request, res: Response, next: NextFunction) => {
@@ -34,6 +34,17 @@ export const findProfile = async(req: Request, res: Response, next: NextFunction
             message: 'Get Profile Success', 
             data: userProfile
         })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const updateProfile = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {usersId, birthDate, address, phoneNumber} = req.body
+        const imagesUploaded = req.files;
+
+        await updateProfileService({usersId, birthDate, address, phoneNumber, imagesUploaded})
     } catch (error) {
         next(error)
     }
