@@ -14,5 +14,5 @@ export const createProfileValiditionSchema = Yup.object().shape({
             const fileFormatAccepted = ['jpg', 'jpeg', 'png', 'webp', 'svg']
             return file && fileFormatAccepted.includes(file.type.split('/')[1])
         })
-    ).required('File Belum Dipilih')
+    ).min(1, 'File Wajib Dipilih')
 })

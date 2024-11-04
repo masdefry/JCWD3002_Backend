@@ -10,7 +10,7 @@ interface IMutateUpdateProfileApi{
 export const mutateUpdateProfileApi = ({onSuccess, onError}: IMutateUpdateProfileApi) => {
     const {mutate: mutateUpdateProfile} = useMutation({
         mutationFn: async(fd) => {
-            return await instance.put('/users')
+            return await instance.put('/users', fd)
         }, 
 
         onSuccess, 
