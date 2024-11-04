@@ -76,11 +76,11 @@ const updateProfileService = (_a) => __awaiter(void 0, [_a], void 0, function* (
         yield tx.userProfileImage.createMany({
             data: imagesToCreate
         });
+        // Step-03 Delete Image User File Based on Step-02
+        const imagesToDelete = findProfileImages.map((image) => {
+            return { path: `${image.directory}/${image.imageUrl}` };
+        });
+        (0, delete_files_1.deleteFiles)({ imagesUploaded: { images: imagesToDelete } });
     }));
-    // Step-03 Delete Image User File Based on Step-02
-    const imagesToDelete = findProfileImages.map((image) => {
-        return { path: `${image.directory}/${image.imageUrl}` };
-    });
-    (0, delete_files_1.deleteFiles)({ imagesUploaded: { images: imagesToDelete } });
 });
 exports.updateProfileService = updateProfileService;

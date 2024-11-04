@@ -53,6 +53,11 @@ const updateProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         const { usersId, birthDate, address, phoneNumber } = req.body;
         const imagesUploaded = req.files;
         yield (0, users_service_1.updateProfileService)({ usersId, birthDate, address, phoneNumber, imagesUploaded });
+        res.status(200).json({
+            error: false,
+            message: 'Update Profile Success',
+            data: { birthDate, address, phoneNumber }
+        });
     }
     catch (error) {
         next(error);

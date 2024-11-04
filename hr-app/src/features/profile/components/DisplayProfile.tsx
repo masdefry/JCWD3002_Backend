@@ -1,5 +1,6 @@
 import {IDisplayProfileProps} from './types'
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function DisplayProfile({
     birthDate,
@@ -7,6 +8,8 @@ export default function DisplayProfile({
     address,
     imagesProfile
 }: IDisplayProfileProps){
+    const router = useRouter()
+
     return(
         <section className='p-10'>
             <section className='flex flex-col gap-3'>
@@ -47,7 +50,7 @@ export default function DisplayProfile({
                         {address}
                     </h1>
                 </label>
-                <button className='btn bg-red-500 text-white w-full'>
+                <button onClick={() => router.push('/dashboard/profile/edit')} className='btn bg-red-500 text-white w-full'>
                     Edit Profile
                 </button>
             </section>

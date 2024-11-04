@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteFiles = void 0;
 const fs_1 = __importDefault(require("fs"));
 const deleteFiles = ({ imagesUploaded }) => {
+    console.log(imagesUploaded);
     imagesUploaded.images.forEach((item) => {
         fs_1.default.rmSync(item.path);
     });

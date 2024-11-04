@@ -45,6 +45,12 @@ export const updateProfile = async(req: Request, res: Response, next: NextFuncti
         const imagesUploaded = req.files;
 
         await updateProfileService({usersId, birthDate, address, phoneNumber, imagesUploaded})
+    
+        res.status(200).json({
+            error: false, 
+            message: 'Update Profile Success', 
+            data: {birthDate, address, phoneNumber}
+        })
     } catch (error) {
         next(error)
     }

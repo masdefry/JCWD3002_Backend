@@ -71,13 +71,12 @@ export const updateProfileService = async({birthDate, address, phoneNumber, user
         await tx.userProfileImage.createMany({
             data: imagesToCreate
         })
+
+        // Step-03 Delete Image User File Based on Step-02
+        const imagesToDelete = findProfileImages.map((image) => {
+            return {path: `${image.directory}/${image.imageUrl}`}
+        })
+
+        deleteFiles({imagesUploaded: {images: imagesToDelete}})
     })
-
-    // Step-03 Delete Image User File Based on Step-02
-    const imagesToDelete = findProfileImages.map((image) => {
-        return {path: `${image.directory}/${image.imageUrl}`}
-    })
-
-    deleteFiles({imagesUploaded: {images: imagesToDelete}})
-
 }

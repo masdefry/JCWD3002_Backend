@@ -2,14 +2,17 @@ import {Formik, Form, Field, ErrorMessage} from 'formik';
 import { createProfileValiditionSchema } from '@/features/profile/schemas/createProfileValidationSchema';
 import {IFormProfile} from './types';
 
-export default function FormProfile({mutateCreateProfile}: IFormProfile){
+export default function FormProfile({mutateCreateProfile, birthDate, address, phoneNumber}: IFormProfile){
+    console.log(birthDate)
+    console.log(address)
+    console.log(phoneNumber)
     return(
         <Formik
             initialValues={{
                 file: [] as File[], 
-                birthDate: '',
-                phoneNumber: '',
-                address: ''
+                birthDate: birthDate || '',
+                phoneNumber: phoneNumber || '',
+                address: address || ''
             }}
             validationSchema={createProfileValiditionSchema}
             onSubmit={(values) => {
